@@ -1,0 +1,68 @@
+# Python bytecode/cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Native extensions
+*.so
+
+# Packaging/build artifacts
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Test/coverage artifacts
+.pytest_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Type checker / linter caches
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Airflow runtime artifacts
+airflow.db
+airflow-webserver.pid
+airflow-scheduler.pid
+airflow-worker.pid
+airflow-triggerer.pid
+logs/
+
+# Environment/secrets
+.env
+.env.*
+*.pem
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Project data and generated outputs
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.db
+
+# Keep placeholders if you use them
+!data/.gitkeep
+!notebooks/.gitkeep
+
