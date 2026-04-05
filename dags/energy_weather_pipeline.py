@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 from src.ingestion.eia_api import fetch_eia_demand
 from src.ingestion.weather_api import fetch_weather_data
-from src.processing.merger import merge_and_validate_data
+from src.processing.merger import validate_and_merge
 from src.features.feature_engineering import build_energy_features
 
 default_args = {
@@ -43,7 +43,7 @@ with DAG(
 
     merge_validate_task = PythonOperator(
         task_id='merge_and_validate',
-        python_callable=merge_and_validate_data
+        python_callable=validate_and_merge
     )
 
     feature_engineering_task = PythonOperator(

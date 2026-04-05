@@ -1,6 +1,10 @@
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
+import logging
+from pathlib import Path
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def fetch_weather_data(lat:float,lon:float, days_back: int = 7) -> pd.DataFrame:
     end_date = datetime.now().date()
@@ -27,9 +31,22 @@ def fetch_weather_data(lat:float,lon:float, days_back: int = 7) -> pd.DataFrame:
             "temperature_f": data["hourly"]["temperature_2m"]
         })
         df['temperature_f'] = (df['temperature_f'] * 9/5) + 32
-        print(f"Successfully fetched {len(df)} hours of weather data.")
-        df.to_parquet(f"data/01_raw/weather_{start_date}_to_{end_date}.prequet", index=False)
+
+        null_count = df['temperature_f'].isnull().sum()
+        logging.info(f"Weather Data - Rows: {len(df)}, Nulls: {null_count}")
+        logging.info(f"Time range: {df['timestamp'].min()} to {df['timestamp'].max()}")
+
+        output_path = 'data/01_raw/weather.parquet'
+        out_dir = Path(output_path).parent
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        df.to_parquet(output_path, index=False)
+        logging.info(f"Successfully saved to {output_path}")
+
         return df
     except requests.exceptions.RequestException as e:
         print(f"CRITICAL ERROR: Failed to fetch weather data. Details: {e}")
         raise
+
+if __name__ == "__main__":
+    fetch_weather_data(lat=41.8781, lon=-87.6298, days_back=7)
